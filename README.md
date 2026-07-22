@@ -9,3 +9,7 @@ DD-MM-YYYY on the screensaver
 Monday and Wednesday proofreading fixes
 µg/m³ for PM2.5 and PM10
 mg/m³ for eTVOC and formaldehyde
+
+And a final one: https://github.com/IainPHay/PandaSensePro/blob/master/Firmware/01.00.00.00/panda_sense_pro_01.00.00.00_UK-date-proofreading-fonts-CO2-SI-PMsub-andwebfixes.bin
+
+Which patches the PM2.5 and PM10 to subscript, changes the µg/m³ to more formal -3 form and patches the debpage to correct notation as well

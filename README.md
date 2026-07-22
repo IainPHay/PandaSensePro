@@ -2,7 +2,7 @@ A fork to add a firmware file with UK date format of dd-mm-yyyy for main screen 
 
 And a second one which does much more:
 
-panda_sense_pro_01.00.00.00_UK-date-proofreading-fonts-v8-final.bin fixes the UK date, fixes typographical errors and correct the units to be correct SI units:
+panda_sense_pro_01.00.00.00_UK-date-proofreading-fonts-v8-final.bin fixes the UK date, fixes typographical errors and correct the units to be better represented although still not strictly SI:
 
 DD-MM-YYYY HH:MM on the dashboard
 DD-MM-YYYY on the screensaver

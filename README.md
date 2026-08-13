@@ -1,3 +1,5 @@
+Edit: Firmware in 01.01.00.03 is based on latest BTT one, contains all fixes
+
 A fork to add a firmware file with UK date format of dd-mm-yyyy for main screen and screensaver as the date format is not correct when UK timezone is applied. New version is in firmware.
 
 And a second one which does much more:

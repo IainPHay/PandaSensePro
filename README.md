@@ -1,3 +1,21 @@
+## Custom firmware 01.01.00.03 – Wi-Fi AP fix v2 (25 November 2026)
+
+[Download the latest custom firmware](Firmware/01.01.00.03/panda_sense_pro_01.01.00.03_UK-SI-WiFi-AP-toggle-test-v2.bin)
+
+This version is based on BIGTREETECH firmware 01.01.00.03 and retains all previous UK date, proofreading, CO₂, PM₂.₅/PM₁₀, SI unit, font and web interface corrections.
+
+It additionally addresses [BTT issue #11 – AP mode not shutting off](https://github.com/bigtreetech/PandaSensePro/issues/11). Previously, disabling the built-in Wi-Fi access point could leave it broadcasting, and the AP toggle would return to On when revisiting the settings page.
+
+The patch allows the AP disable request to reach the existing firmware control routines and requests an AP-mode recheck when the device obtains an IP address. With AP always-on disabled, the unit can operate on the local Wi-Fi network without its own access point continuing to broadcast.
+
+**Testing:** Successfully installed over OTA and confirmed working on my Panda Sense Pro. Automatic AP recovery following prolonged Wi-Fi loss has not yet been verified. This is unofficial modified firmware; retain the previous working firmware and recovery tool in case recovery is required.
+
+**SHA-256:** `b54c4264aec8d0d9b9360f43f2919db7d63c6234a926431e5d0a213502e9527e`
+
+The previous custom firmware remains available in the same firmware directory for rollback.
+
+---
+
 Edit: Firmware in 01.01.00.03 is based on latest BTT one, contains all fixes
 
 A fork to add a firmware file with UK date format of dd-mm-yyyy for main screen and screensaver as the date format is not correct when UK timezone is applied. New version is in firmware.

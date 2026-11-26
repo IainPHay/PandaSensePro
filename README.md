@@ -1,3 +1,44 @@
+## Custom firmware 01.01.00.03 – configurable static IPv4 (v4.6a.2, 26 November 2026)
+
+**[Download UK date / SI / AP fix / static IPv4 firmware](Firmware/01.01.00.03/panda_sense_pro_01.01.00.03_UK-SI-APv2-STATIC-POC-v4.6a.2-WEB-DHCP-RESET.bin)**
+
+Unofficial, hardware-tested community firmware based on BIGTREETECH 01.01.00.03. This is the currently tested static IPv4 build, not an official BTT release. It retains the earlier UK date, proofreading, SI notation, font, web interface and AP toggle corrections.
+
+### What's new
+
+- Wi-Fi & IP settings now offer Automatic (DHCP) or Manual (static IPv4).
+- Manual mode provides IP address, subnet mask, gateway, primary DNS and optional secondary DNS, with input validation.
+- Settings are saved and verified in non-volatile storage; restart separately to apply them.
+- DHCP remains the default when no valid manual IPv4 record is present. A completely fresh device has not yet been physically tested with this build.
+- The web factory-reset action first saves verified DHCP defaults before requesting the original BTT reset. It aborts if the save is not confirmed. The physical-button reset and direct WebSocket reset command do not use this new preparation.
+- Addresses are configurable; no personal static address is preconfigured by this release.
+
+This addresses the manual-IP feature requested in [BTT issue #9](https://github.com/bigtreetech/PandaSensePro/issues/9) and retains the AP toggle correction for [issue #11](https://github.com/bigtreetech/PandaSensePro/issues/11).
+
+### Tested on hardware
+
+- OTA installation, static IPv4 and DHCP selection, saving, restarting, switching between modes, and cold-boot persistence.
+- Web factory reset from manual mode and subsequent reconfiguration.
+- Short Wi-Fi reconnection in static mode; local web interface and MQTT sensor updates resumed.
+- Primary DNS, NTP and secondary DNS failover (including after a short reconnection). The release image also passes ESP image checksum and digest checks and ten simulated browser reset tests.
+
+### Known limitations
+
+- In a prolonged UniFi client-block/unblock test, automatic reconnection failed in both DHCP and manual IPv4 modes. A power cycle restored connectivity in manual mode. A sustained recovery AP was not observed. The underlying cause has not been isolated against unmodified BTT firmware; this is under separate investigation. Do not rely on the recovery AP being available during a prolonged outage.
+- The physical-button reset does not clear the custom static IPv4 record; use the web factory reset when possible. Hardware recovery remains an option.
+- The added network-setting WebSocket command uses the existing local interface without additional authentication. Use only on a trusted local network; do not expose the device to the Internet.
+- Testing has been on one physical unit; fresh-device provisioning and wider network compatibility remain to be validated. Only the UK date variant is published for this release.
+
+### Installation and rollback
+
+Use the normal BTT firmware upgrade procedure for Panda Sense Pro. Keep a previous working firmware and the official hardware recovery procedure available. After upgrading, hard-refresh the browser, open Wi-Fi & IP, select the desired mode, save, confirm success, and restart. For manual mode choose an unused address appropriate to your own network and avoid DHCP conflicts. The prior AP fix v2 binaries below remain available for rollback.
+
+**File size:** 1,531,472 bytes
+
+**SHA-256:** `29c56910bd848079f2956568b2949b0e42fb4e4d71ad6348c860c3fd5e1ca7c6`
+
+---
+
 ## Custom firmware 01.01.00.03 – Wi-Fi AP fix v2 (25 November 2026)
 
 Two variants are available:

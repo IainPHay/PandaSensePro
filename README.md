@@ -1,6 +1,11 @@
 ## Custom firmware 01.01.00.03 – configurable static IPv4 (v4.6a.2, 26 November 2026)
 
-**[Download UK date / SI / AP fix / static IPv4 firmware](Firmware/01.01.00.03/panda_sense_pro_01.01.00.03_UK-SI-APv2-STATIC-POC-v4.6a.2-WEB-DHCP-RESET.bin)**
+| Date format | Firmware v4.6a.2 | Testing |
+| --- | --- | --- |
+| UK: DD-MM-YYYY | [Download UK date version](Firmware/01.01.00.03/panda_sense_pro_01.01.00.03_UK-SI-APv2-STATIC-POC-v4.6a.2-WEB-DHCP-RESET.bin) | Tested on hardware |
+| Original BTT: YYYY-MM-DD | [Download original date version](Firmware/01.01.00.03/panda_sense_pro_01.01.00.03_Original-date-SI-APv2-STATIC-POC-v4.6a.2-WEB-DHCP-RESET.bin) | Binary integrity verified; hardware testing outstanding |
+
+Both variants retain the same static IPv4, SI notation, AP toggle and web factory reset functionality. The original-date variant restores the vendor date format on the dashboard and screensaver; only 21 date-related bytes and the image integrity fields differ from the UK build.
 
 Unofficial, hardware-tested community firmware based on BIGTREETECH 01.01.00.03. This is the currently tested static IPv4 build, not an official BTT release. It retains the earlier UK date, proofreading, SI notation, font, web interface and AP toggle corrections.
 
@@ -27,7 +32,7 @@ This addresses the manual-IP feature requested in [BTT issue #9](https://github.
 - In a prolonged UniFi client-block/unblock test, automatic reconnection failed in both DHCP and manual IPv4 modes. A power cycle restored connectivity in manual mode. A sustained recovery AP was not observed. The underlying cause has not been isolated against unmodified BTT firmware; this is under separate investigation. Do not rely on the recovery AP being available during a prolonged outage.
 - The physical-button reset does not clear the custom static IPv4 record; use the web factory reset when possible. Hardware recovery remains an option.
 - The added network-setting WebSocket command uses the existing local interface without additional authentication. Use only on a trusted local network; do not expose the device to the Internet.
-- Testing has been on one physical unit; fresh-device provisioning and wider network compatibility remain to be validated. Only the UK date variant is published for this release.
+- Testing has been on one physical unit; fresh-device provisioning and wider network compatibility remain to be validated. The original-date variant has not yet been tested on hardware.
 
 ### Installation and rollback
 
@@ -35,7 +40,9 @@ Use the normal BTT firmware upgrade procedure for Panda Sense Pro. Keep a previo
 
 **File size:** 1,531,472 bytes
 
-**SHA-256:** `29c56910bd848079f2956568b2949b0e42fb4e4d71ad6348c860c3fd5e1ca7c6`
+**SHA-256 (UK date variant):** `29c56910bd848079f2956568b2949b0e42fb4e4d71ad6348c860c3fd5e1ca7c6`
+
+**SHA-256 (original BTT date variant):** `3993e4bd24b60717678413251a567005cc49aad6c2f1e7c0af5f806d280f163b`
 
 ---
 

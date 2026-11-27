@@ -1,3 +1,74 @@
+## Custom firmware 01.01.00.03 — v4.8 (27 November 2026)
+
+**Temperature calibration and web resource optimisation**
+
+Unofficial community firmware based on BIGTREETECH Panda Sense Pro 01.01.00.03, with custom firmware by Demig. This release consolidates v4.7a.1 through v4.7a.3 and retains the functionality described in the v4.7 release below.
+
+| Date format | Download | Validation |
+| --- | --- | --- |
+| UK: DD-MM-YYYY | [v4.8 UK](Firmware/01.01.00.03/panda_sense_pro_01.01.00.03_UK-SI-APv2-v4.8.bin) | UK v4.7a.3 hardware-tested; v4.8 version-only promotion verified |
+| Original BTT: YYYY-MM-DD | [v4.8 original date](Firmware/01.01.00.03/panda_sense_pro_01.01.00.03_ORIGINAL-DATE-SI-APv2-v4.8.bin) | Binary integrity verified; hardware testing outstanding |
+
+### Temperature calibration
+
+- Open the web interface's Settings page and enter a temperature correction from −10.0 to +10.0°C in 0.1°C increments. Save the correction; it applies to subsequent valid measurements without rebooting.
+- The default is 0.0°C additional correction. The existing vendor compensation is retained, including its conditional 3.5°C subtraction; the custom correction is additive and the vendor temperature limits remain in place.
+- Use a reliable reference thermometer near the Panda, allow both devices to stabilise, and adjust based on the difference between the reference and the Panda's reported temperature. Do not assume every device requires the same correction.
+- The saved value uses a separate versioned non-volatile storage key. Save operations verify the stored value before acknowledging success; unchanged settings avoid unnecessary flash writes. The offset survives a restart. Invalid or unreadable stored settings do not apply an arbitrary correction.
+- **Restore factory compensation** sets the additional offset back to zero without erasing the Wi-Fi or MQTT settings.
+- English and Simplified Chinese resources are included. Controls are disabled while the setting is being retrieved or saved; invalid inputs, unconfirmed saves and timeouts are handled.
+- Web factory reset first verifies a zero calibration setting, then follows the existing verified DHCP-default save/reset procedure. A failure or uncertain acknowledgement aborts the reset sequence. This staged process is not atomic; calibration may already be cleared if a subsequent network reset step fails. Physical-button and direct-command factory resets have not been extended to clear the custom setting.
+
+### Home Assistant / MQTT
+
+The existing ten MQTT entities and environmental topic/payload are preserved. Three new automatically discovered diagnostic sensors are added to the same device, giving thirteen native entities:
+
+| New diagnostic | Unit | Discovery suffix | Diagnostic JSON field |
+| --- | --- | --- | --- |
+| Raw sensor temperature | °C | `raw_temperature` | `raw_t` |
+| Factory-compensated temperature | °C | `factory_temperature` | `factory_t` |
+| Configured temperature correction | °C | `temperature_correction` | `offset_t` |
+
+The new fields are signed integer tenths of a degree Celsius; the discovery templates convert them to degrees Celsius. Raw temperature is the vendor's calculated pre-compensation measurement, not an independently calibrated reference. Raw and factory-compensated diagnostic values are null if the sample is invalid or stale. The additional offset is reported separately. Discovery uses correct Celsius Unicode encoding; all thirteen entities have 60-second expiry.
+
+Example diagnostic payload (illustrative):
+
+```json
+{"uptime":155,"rssi":-67,"raw_t":238,"factory_t":203,"offset_t":11}
+```
+
+This corresponds to 23.8°C raw, 20.3°C factory-compensated, +1.1°C additional correction, and approximately 21.4°C reported temperature. The normal environmental temperature remains in the existing `temper` field of `panda_sense_pro/<device_id>/state` and includes the correction. Diagnostic values are sampled approximately every 30 seconds and environmental values approximately every five seconds, so asynchronous readings can differ slightly. Existing Home Assistant history is not replaced.
+
+### Web resource optimisation
+
+- Syntax-aware JavaScript minification, with code optimisation and variable renaming disabled, reclaimed approximately 7 KB of compressed web resource capacity in v4.7a.1.
+- Calibration controls and discovery resources now fit in the reclaimed space. The v4.8 builds retain approximately 3.7 KB of contiguous web resource space before the new calibration resources. No relocation into an unverified flash padding region.
+- Existing language, network, MQTT, date-format and attribution functionality is retained. Settings identifies the version as `01.01.00.03 / v4.8 UK` or `01.01.00.03 / v4.8 Original`.
+
+### Validation and known limitations
+
+- UK v4.7a.1 web minification passed initial live web and ten-entity MQTT regression checks.
+- UK v4.7a.2b validated raw-temperature extraction, vendor compensation, all thirteen MQTT entities, and an independent fixed +0.8°C correction test. The earlier v4.7a.2 discovery encoding defect was corrected in v4.7a.2b.
+- UK v4.7a.3 hardware tests confirmed live positive and negative correction, restoration of factory compensation (user-confirmed and corroborated by environmental history), and retrieval of a saved +1.1°C correction in the first diagnostic message after restart. Existing native and legacy temperature sensors agreed. No new MQTT errors were observed in the test window.
+- eTVOC initially displayed a dash after reboot and returned to a reading of 0.100 mg/m³ after warm-up, consistent with the MQTT reading. The vendor eTVOC warm-up behaviour is unchanged. MQTT can publish a numeric value during warm-up; its validity in that period is not established.
+- Both v4.8 binaries have the same functional code as their corresponding v4.7a.3 binaries. Only the embedded web version label, compressed-resource length and image integrity fields differ. The release-labelled images have not themselves been flashed.
+- Extended stability testing, physical Chinese-language testing, full web factory-reset testing, original-date hardware testing and fresh provisioning remain outstanding. The web calibration logic was tested offline across all 201 allowed values and invalid inputs, timeout and reset acknowledgement cases; this does not constitute hardware validation of every case.
+- Prolonged Wi-Fi loss recovery remains unresolved. No new reconnect policy or fallback AP mechanism is included. Use on a trusted local network; the existing web interface and MQTT transport security are unchanged.
+
+### Installation and rollback
+
+Use the official [Panda Sense Pro firmware upgrade instructions](https://neo.bttwiki.com/en/docs/panda-series/module/panda-sense-pro/). Choose the appropriate date variant, allow the update to complete, hard-refresh the browser and check the Settings version. Keep the previous working firmware available. v4.7 and earlier builds remain available below. Do not assume a rollback erases the separate calibration storage key.
+
+Both binaries are 1,533,312 bytes. SHA-256:
+
+- UK: `c6d4db44dc33d85c415305c2b35bae683c6e055b43c9af901e7f73c16f0b04ff`
+- Original date: `9dac296ee0ec54fb38e12484dbab486d6a6ba1850a825188c5fb715837118b10`
+
+Next development: prolonged Wi-Fi recovery (now planned for v4.9), followed by optional fallback AP, provisioning improvements, additional languages and further sensor diagnostics. The temperature calibration work originally planned for later has been brought forward into v4.8.
+
+
+---
+
 ## Custom firmware 01.01.00.03 — v4.7 (27 November 2026)
 
 Unofficial community firmware based on BIGTREETECH Panda Sense Pro firmware 01.01.00.03, with custom firmware by Demig. This consolidates v4.6a.2 through v4.6a.5b. It is not an official BTT release.
